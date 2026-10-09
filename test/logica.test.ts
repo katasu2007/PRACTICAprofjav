@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   CONFIG,
+  DICCIONARIO_JUGABLE,
   DICCIONARIO_NAHUAT,
   crearPartida,
   crearPartidaDelDia,
@@ -60,6 +61,25 @@ describe('Lógica de NÁHUAT DIARIO', () => {
     expect(evaluarIntento('cuate', 'cuacuahue')).toBeNull()
   })
 
+  it('incluye expresiones en el cuaderno pero no las selecciona para jugar', () => {
+    const expresion = DICCIONARIO_NAHUAT.find(
+      (entrada) => entrada.palabra === 'amo',
+    )
+
+    expect(expresion?.admiteJuego).toBe(false)
+    expect(DICCIONARIO_JUGABLE).not.toContain(expresion)
+    expect(proponerIntento(crearPartidaDePrueba('etl'), 'amo')).toBe(false)
+  })
+
+  it('permite jugar cada palabra individual incluida en el vocabulario', () => {
+    for (const entrada of DICCIONARIO_JUGABLE) {
+      const partida = crearPartidaDePrueba(entrada.palabra)
+
+      expect(proponerIntento(partida, entrada.palabra)).toBe(true)
+      expect(partida.estado).toBe('ganada')
+    }
+  })
+
   it('acepta una palabra del vocabulario de la longitud del objetivo y evalúa cada letra', () => {
     const partida = crearPartidaDePrueba('comal')
 
@@ -100,7 +120,7 @@ describe('Lógica de NÁHUAT DIARIO', () => {
 
   it('termina en derrota y revela el aprendizaje después de seis intentos fallidos', () => {
     const partida = crearPartidaDePrueba('comal')
-    const intentosFallidos = DICCIONARIO_NAHUAT.filter(
+    const intentosFallidos = DICCIONARIO_JUGABLE.filter(
       (entrada) =>
         Array.from(normalizarPalabra(entrada.palabra)).length ===
           partida.palabraObjetivo.length &&
@@ -125,7 +145,7 @@ describe('Lógica de NÁHUAT DIARIO', () => {
     expect(proponerIntento(ganada, 'comal')).toBe(false)
 
     const perdida = crearPartidaDePrueba('comal')
-    const fallos = DICCIONARIO_NAHUAT.filter(
+    const fallos = DICCIONARIO_JUGABLE.filter(
       (entrada) =>
         entrada.palabra.length === perdida.palabraObjetivo.length &&
         entrada.palabra !== perdida.palabraObjetivo,
@@ -139,7 +159,7 @@ describe('Lógica de NÁHUAT DIARIO', () => {
 
   it('recorre una partida completa hasta acertar y revela el significado en español', () => {
     const partida = crearPartidaDePrueba('axolotl')
-    const intentosPrevios = DICCIONARIO_NAHUAT.filter(
+    const intentosPrevios = DICCIONARIO_JUGABLE.filter(
       (entrada) =>
         Array.from(normalizarPalabra(entrada.palabra)).length ===
           partida.palabraObjetivo.length &&

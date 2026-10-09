@@ -12,6 +12,7 @@ export interface EntradaDiccionario {
   readonly traduccion: string
   readonly categoria: string
   readonly fuente: string
+  readonly admiteJuego: boolean
 }
 
 export interface LetraEvaluada {
@@ -54,7 +55,7 @@ const VOCABULARIO: readonly (readonly [string, string, string])[] = [
   ['popotl', 'escoba', 'Palabras frecuentes'],
   ['tianquizco', 'tianguis; mercado', 'Palabras frecuentes'],
   ['tomātl', 'tomate; agua gorda', 'Palabras frecuentes'],
-  ['papalotl', 'mariposa', 'Palabras frecuentes y animales'],
+  ['papalotl', 'mariposa', 'Palabras frecuentes · Animales'],
   ['elotl', 'elote; mazorca de maíz', 'Palabras frecuentes'],
   ['ahuacamolli', 'guacamole; aguacate y salsa', 'Palabras frecuentes'],
   ['tzictli', 'goma de mascar', 'Palabras frecuentes'],
@@ -87,7 +88,7 @@ const VOCABULARIO: readonly (readonly [string, string, string])[] = [
   ['xocoyotl', 'hijo o hija menor', 'Personas y familia'],
   ['ahuacayol', 'testículo', 'Cuerpo'],
   ['camatl', 'boca', 'Cuerpo'],
-  ['nacatl', 'carne', 'Cuerpo y comida'],
+  ['nacatl', 'carne', 'Cuerpo · Comida'],
   ['cuaitl', 'cabeza', 'Cuerpo'],
   ['cuitlapantli', 'espalda', 'Cuerpo'],
   ['elpantli', 'pecho', 'Cuerpo'],
@@ -161,13 +162,43 @@ const VOCABULARIO: readonly (readonly [string, string, string])[] = [
   ['tzopelic', 'dulce', 'Comida'],
 ]
 
-export const DICCIONARIO_NAHUAT: readonly EntradaDiccionario[] =
+const EXPRESIONES: readonly (readonly [string, string])[] = [
+  ['quema', 'sí'],
+  ['amo', 'no'],
+  ['ken tika', '¿Cómo estás?'],
+  ['ken tietoc', '¿Cómo estás?'],
+  ['quen motoka', '¿Cómo es tu nombre?; ¿cómo te llamas?'],
+  ['kampa mochan', '¿Dónde está tu casa?; ¿dónde vives?'],
+  ['kexqui xiuitl tikpia', '¿Cuántos años tienes?'],
+  ['ne notoka', 'Mi nombre es; me llamo'],
+  ['nochan ompa', 'Mi casa está en; vivo en; allá en mi casa'],
+  ['nimitstlatlauki', '(te lo pido) por favor'],
+  ['nimitstlatlaukilia', '(se lo pido a usted) por favor'],
+  ['tlasojkamati', 'gracias'],
+  ['tlazohcamatica', 'gracias'],
+  ['senka tlasojkamati', 'muchas gracias'],
+  ['cenca tlazohcamatica', 'muchas gracias'],
+]
+
+export const DICCIONARIO_JUGABLE: readonly EntradaDiccionario[] =
   VOCABULARIO.map(([palabra, traduccion, categoria]) => ({
     palabra,
     traduccion,
     categoria,
     fuente: FUENTE_DICCIONARIO,
+    admiteJuego: true,
   }))
+
+export const DICCIONARIO_NAHUAT: readonly EntradaDiccionario[] = [
+  ...DICCIONARIO_JUGABLE,
+  ...EXPRESIONES.map(([palabra, traduccion]) => ({
+    palabra,
+    traduccion,
+    categoria: 'Expresiones frecuentes',
+    fuente: FUENTE_DICCIONARIO,
+    admiteJuego: false,
+  })),
+]
 
 export function normalizarPalabra(palabra: string): string {
   return palabra
@@ -178,7 +209,7 @@ export function normalizarPalabra(palabra: string): string {
 
 function buscarEntrada(palabra: string): EntradaDiccionario | undefined {
   const normalizada = normalizarPalabra(palabra)
-  return DICCIONARIO_NAHUAT.find(
+  return DICCIONARIO_JUGABLE.find(
     (entrada) => normalizarPalabra(entrada.palabra) === normalizada,
   )
 }
@@ -199,9 +230,9 @@ export function generarNumeroAleatorio(semilla: number): number {
 
 export function seleccionarPalabra(semilla: number): EntradaDiccionario {
   const indice = Math.floor(
-    generarNumeroAleatorio(semilla) * DICCIONARIO_NAHUAT.length,
+    generarNumeroAleatorio(semilla) * DICCIONARIO_JUGABLE.length,
   )
-  return DICCIONARIO_NAHUAT[indice]
+  return DICCIONARIO_JUGABLE[indice]
 }
 
 export function crearPartida(semilla: number): EstadoJuego {
@@ -337,8 +368,8 @@ export function proponerIntento(
     partida.aprendizaje = {
       palabra: respuesta.palabra,
       traduccion: respuesta.traduccion,
-      categoria: respuesta.categoria,
       fuente: respuesta.fuente,
+      categoria: respuesta.categoria,
     }
   }
 

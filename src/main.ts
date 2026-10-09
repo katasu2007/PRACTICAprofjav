@@ -36,7 +36,9 @@ const TECLADO = [
 
 const CATEGORIAS = [
   'Todas',
-  ...new Set(DICCIONARIO_NAHUAT.map((entrada) => entrada.categoria)),
+  ...new Set(
+    DICCIONARIO_NAHUAT.flatMap((entrada) => entrada.categoria.split(' · ')),
+  ),
 ]
 
 function escaparHTML(texto: string): string {
@@ -86,7 +88,7 @@ function dibujarTablero(): string {
     </div>`
   }).join('')
 
-  return `<div class="tablero" style="--longitud-palabra:${longitud}" role="table" aria-label="Tablero de seis intentos por ${longitud} letras">${filas}</div>`
+  return `<div class="tablero" style="--longitud-palabra:${longitud}" role="table" aria-label="Tablero de ${CONFIG.MAX_INTENTOS} intentos por ${longitud} letras">${filas}</div>`
 }
 
 function dibujarTeclado(): string {
@@ -123,15 +125,21 @@ function dibujarTeclado(): string {
 }
 
 function encabezado(etiqueta: string): string {
-  const volverAlJuego =
+  const navegar =
     partida?.estado === 'enCurso'
-      ? '<button class="enlace-nav" type="button" data-accion="continuar">Volver a la partida</button>'
-      : ''
+      ? vista === 'estudio'
+        ? '<button class="enlace-nav" type="button" data-accion="continuar">Volver a la partida</button>'
+        : '<button class="enlace-nav" type="button" data-accion="estudiar">Estudiar palabras</button>'
+      : partida
+        ? vista === 'estudio'
+          ? ''
+          : '<button class="enlace-nav" type="button" data-accion="resultado">Volver al resultado</button>'
+        : ''
 
   return `<header class="barra-superior">
     <a class="marca" href="#" aria-label="Náhuat Diario, inicio" data-accion="inicio"><span class="marca-sello" aria-hidden="true">N</span><span>NÁHUAT<br>DIARIO</span></a>
     <span class="insignia-dia">${etiqueta} <span aria-hidden="true">✦</span></span>
-    ${volverAlJuego}
+    ${navegar}
   </header>`
 }
 
@@ -147,7 +155,7 @@ function dibujarInicio(): void {
       <p class="sobretitulo">UNA PALABRA · UNA LENGUA VIVA</p>
       <h1 id="titulo-principal">Descubrí el<br><span>náhuatl</span> de hoy</h1>
       <p class="texto-bienvenida">Explorá palabras del náhuatl, encontrá la palabra diaria y descubrí sus significados.</p>
-      <div class="resumen-reglas"><span>Palabras de distintas longitudes</span><i aria-hidden="true"></i><span>6 intentos</span></div>
+      <div class="resumen-reglas"><span>Palabras de distintas longitudes</span><i aria-hidden="true"></i><span>${CONFIG.MAX_INTENTOS} intentos</span></div>
       <div class="acciones-inicio">
         <button class="boton-principal" type="button" data-accion="empezar">Jugar palabra diaria <span aria-hidden="true">→</span></button>
         <button class="boton-secundario" type="button" data-accion="estudiar">Estudiar vocabulario <span aria-hidden="true">✦</span></button>
@@ -158,11 +166,13 @@ function dibujarInicio(): void {
   </main>`
 }
 
-function dibujarEstudio(): void {
+function dibujarEstudio(preservarDesplazamiento = false): void {
+  const posicionDesplazamiento = window.scrollY
   const busquedaNormalizada = normalizarPalabra(busqueda.trim())
   const entradas = DICCIONARIO_NAHUAT.filter((entrada) => {
     const coincideCategoria =
-      categoriaEstudio === 'Todas' || entrada.categoria === categoriaEstudio
+      categoriaEstudio === 'Todas' ||
+      entrada.categoria.split(' · ').includes(categoriaEstudio)
     const textoEntrada = normalizarPalabra(
       `${entrada.palabra} ${entrada.traduccion} ${entrada.categoria}`,
     )
@@ -206,11 +216,16 @@ function dibujarEstudio(): void {
       <div class="rejilla-fichas">${fichas || '<p class="sin-resultados">No hay palabras que coincidan con esa búsqueda.</p>'}</div>
       <div class="acciones-estudio">
         <button class="boton-principal" type="button" data-accion="empezar">Jugar palabra diaria <span aria-hidden="true">→</span></button>
+        ${partida?.estado !== 'enCurso' && partida ? '<button class="boton-secundario" type="button" data-accion="resultado">Volver al resultado</button>' : ''}
         <button class="boton-secundario" type="button" data-accion="inicio">Volver al inicio</button>
       </div>
     </section>
     ${piePagina()}
   </main>`
+
+  if (preservarDesplazamiento) {
+    window.scrollTo(0, posicionDesplazamiento)
+  }
 }
 
 function dibujarPartida(): void {
@@ -260,10 +275,10 @@ function dibujarFinal(): void {
 }
 
 function dibujar(): void {
-  if (partida && partida.estado !== 'enCurso') {
-    dibujarFinal()
-  } else if (vista === 'estudio') {
+  if (vista === 'estudio') {
     dibujarEstudio()
+  } else if (partida && partida.estado !== 'enCurso') {
+    dibujarFinal()
   } else if (vista === 'juego' && partida) {
     dibujarPartida()
   } else {
@@ -318,6 +333,11 @@ app.addEventListener('click', (evento: MouseEvent) => {
     dibujar()
     return
   }
+  if (botonAccion?.dataset.accion === 'resultado' && partida) {
+    vista = 'juego'
+    dibujar()
+    return
+  }
   if (botonAccion?.dataset.accion === 'inicio') {
     partida = null
     propuesta = ''
@@ -335,7 +355,7 @@ app.addEventListener('click', (evento: MouseEvent) => {
     } else {
       fichasReveladas.add(palabra)
     }
-    dibujarEstudio()
+    dibujarEstudio(true)
     return
   }
 
@@ -372,7 +392,7 @@ app.addEventListener('input', (evento: Event) => {
     objetivo.id === 'buscar-vocabulario'
   ) {
     busqueda = objetivo.value
-    dibujarEstudio()
+    dibujarEstudio(true)
     const campo = app.querySelector<HTMLInputElement>('#buscar-vocabulario')
     campo?.focus()
     campo?.setSelectionRange(busqueda.length, busqueda.length)
@@ -386,7 +406,7 @@ app.addEventListener('change', (evento: Event) => {
     objetivo.id === 'categoria-vocabulario'
   ) {
     categoriaEstudio = objetivo.value
-    dibujarEstudio()
+    dibujarEstudio(true)
   }
 })
 

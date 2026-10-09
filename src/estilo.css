@@ -445,6 +445,7 @@ h1 {
 
 .tablero {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 7px;
   padding: 13px;
@@ -941,6 +942,11 @@ h1 {
 
   .barra-superior {
     gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .enlace-nav {
+    margin-left: auto;
   }
 
   .insignia-dia {
