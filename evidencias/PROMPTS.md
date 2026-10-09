@@ -35,3 +35,15 @@ FICHA COMPLETA DEL PROYECTO:
   * Fondo Oscuro Noche Maya/Pipil (#12100d): Fondo general que resalta las estructuras de piedra.
 - Criterio de aceptación: Abro el juego, veo el tablero con estética de ruinas de piedra, ingreso una palabra Náhuat de 5 letras, las casillas cambian de color revelando aciertos, adivino la palabra antes del sexto intento y la pantalla me muestra la felicitación con la traducción en español y su significado cultural.
 - Lo que no va: Sin audio ni música de fondo, sin compras internas, sin librerías de gráficos 3D complejas, sin animaciones pesadas.
+
+PROMPT 2 — PRUEBAS (Bloque 2):Escribí pruebas con Vitest para src/logica.ts, en test/logica.test.ts.
+
+Como mínimo cinco, y tienen que cubrir:
+1. Que el estado inicial se arme bien (intento 1 de 6, palabra objetivo Náhuat elegida correctamente).
+2. Cada acción del usuario: comprobar qué ocurre cuando se envía un intento válido de 5 letras y qué devuelve si el intento no es válido (ej. palabra de tamaño incorrecto).
+3. Que no se pueda ingresar un intento cuando el juego ya terminó (ganado o perdido).
+4. La condición de «termina bien» (adivinar la palabra Náhuat) y la de «termina mal» (fallar los 6 intentos).
+5. UNA PRUEBA QUE RECORRA UN USO COMPLETO de principio a fin, donde el jugador ingresa intentos hasta adivinar la palabra Náhuat objetivo y se valida que el juego finaliza en estado de victoria revelando el significado en español.
+
+Los nombres de las pruebas en español y en forma de frase.
+No modifiques src/logica.ts. Al terminar corré npm test y pegame el resultado.
