@@ -96,3 +96,11 @@ PROMPT 6 — GENERACIÓN DE README (Bloque 4):Escribí el archivo README.md en e
 6. Declaración de autoría: qué herramienta usé, que el código lo generó un agente de IA bajo mi dirección, y qué partes puedo explicar.
 
 No inventes nada en las partes 5 y 6: dejalas para que las complete yo.
+
+PROMPT R1 — RESCATE / DIAGNÓSTICO (Para usar en caso de error):Cuando hago [ACCIÓN EXACTA, ej. presionar Enter con una palabra de 5 letras], pasa [LO QUE PASA, ej. no evalúa la palabra]. Esperaba [LO CORRECTO, ej. que cambie el color de las casillas].
+
+Mensaje de error, textual:
+[PEGALO COMPLETO, CON EL NÚMERO DE LÍNEA]
+
+Decime las tres causas más probables, de la más a la menos probable.
+No modifiques archivos todavía.
