@@ -84,3 +84,15 @@ PROMPT 5 — REVISIÓN AUDITORA (Bloque 4):Revisá todo el proyecto buscando est
 6. Alguna regla de mi ficha de Náhuat Diario que las pruebas no cubran.
 
 Solo el informe, numerado. TODAVÍA NO ARREGLES NADA.
+
+PROMPT 6 — GENERACIÓN DE README (Bloque 4):Escribí el archivo README.md en español con estas seis partes:
+
+1. Nombre: NÁHUAT DIARIO (Edición Ruinas Ancestrales) y la frase explicativa de mi ficha.
+2. Qué hace y cómo se usa, en tres líneas (adivinar palabras en Náhuat, aprender su traducción en español y significado cultural).
+3. El enlace para abrirlo (URL pública).
+4. Cómo correrlo en otra máquina: los comandos exactos (npm install, npm run dev, npm test).
+5. Dejá este espacio en blanco con un comentario para que lo llene yo:
+   «Qué dirigí yo y qué error encontré probando».
+6. Declaración de autoría: qué herramienta usé, que el código lo generó un agente de IA bajo mi dirección, y qué partes puedo explicar.
+
+No inventes nada en las partes 5 y 6: dejalas para que las complete yo.
