@@ -63,3 +63,13 @@ REGLAS DE DISEÑO Y ESTÉTICA:
 - Importá el CSS desde main.ts con: import './estilo.css'
 
 Ajustá index.html para que tenga un div con id="app" y cargue src/main.ts como módulo. Al terminar confirmame que no hay errores en la consola.
+
+PROMPT 4 — ADAPTACIÓN MÓVIL (Bloque 3):Hacé que NÁHUAT DIARIO funcione bien en un celular:
+
+1. Todo lo que se toca (especialmente cada tecla del teclado virtual en pantalla) tiene que medir al menos 44 píxeles de alto y de ancho.
+2. Nada se sale de la pantalla a lo ancho: cero desplazamiento horizontal, incluso en pantallas pequeñas.
+3. El texto nunca baja de 16 píxeles.
+4. Funciona con el dedo (teclado táctil adaptado) y también con teclado físico de la computadora, las dos cosas.
+5. Agregá la etiqueta viewport en index.html si falta.
+
+No cambies las reglas ni la dificultad. Decime qué ajustaste.
