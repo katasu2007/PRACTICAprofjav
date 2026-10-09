@@ -73,3 +73,14 @@ PROMPT 4 — ADAPTACIÓN MÓVIL (Bloque 3):Hacé que NÁHUAT DIARIO funcione bie
 5. Agregá la etiqueta viewport en index.html si falta.
 
 No cambies las reglas ni la dificultad. Decime qué ajustaste.
+
+PROMPT 5 — REVISIÓN AUDITORA (Bloque 4):Revisá todo el proyecto buscando estos seis problemas, y decime cuáles tiene y en qué línea está cada uno:
+
+1. Lógica metida dentro de main.ts.
+2. Números sueltos fuera del objeto CONFIG (ej. cantidad de intentos o longitud de la palabra sueltos en el código).
+3. Un final bueno al que no se pueda llegar: hacé el cálculo con las palabras Náhuat y los intentos reales.
+4. Estado que no se reinicia bien al empezar una nueva partida.
+5. Variables o funciones que quedaron sin uso.
+6. Alguna regla de mi ficha de Náhuat Diario que las pruebas no cubran.
+
+Solo el informe, numerado. TODAVÍA NO ARREGLES NADA.
