@@ -47,3 +47,19 @@ Como mínimo cinco, y tienen que cubrir:
 
 Los nombres de las pruebas en español y en forma de frase.
 No modifiques src/logica.ts. Al terminar corré npm test y pegame el resultado.
+
+PROMPT 3 — PANTALLA E INTERFAZ CON ESTÉTICA DE RUINAS (Bloque 3):–Creá src/main.ts y src/estilo.css para mostrar NÁHUAT DIARIO en pantalla con una estética llamativa de ruinas arqueológicas.
+
+REGLAS DE DISEÑO Y ESTÉTICA:
+- Inspirado en ruinas arqueológicas Náhuat/Pipil: usa tonos de piedra, arcilla terracota (#8d6e63), verde jade (#2e7d32) y oro ámbar (#f57f17) sobre un fondo oscuro de noche en la selva/ruinas (#12100d).
+- Los bordes del tablero deben simular bloques de piedra grabados o marcos de barro.
+- main.ts NO decide nada: llama a las funciones de logica.ts y dibuja el resultado. Si tenés que escribir una regla acá, está en el lugar equivocado: decímelo en lugar de hacerlo.
+- Tres estados visibles: 
+  1. El inicio / bienvenida a las ruinas Náhuat.
+  2. El uso normal (tablero de 6x5, teclado en pantalla interactivo).
+  3. El final (tarjeta con el significado en español de la palabra Náhuat acertada, dato cultural y opción de reiniciar).
+- Contraste alto y texto nunca menor a 16 píxeles.
+- Los colores según mi ficha. Sin imágenes ni librerías externas (usa CSS puro para los estilos de piedra/ruinas).
+- Importá el CSS desde main.ts con: import './estilo.css'
+
+Ajustá index.html para que tenga un div con id="app" y cargue src/main.ts como módulo. Al terminar confirmame que no hay errores en la consola.
