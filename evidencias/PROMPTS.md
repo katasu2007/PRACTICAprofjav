@@ -104,3 +104,6 @@ Mensaje de error, textual:
 
 Decime las tres causas más probables, de la más a la menos probable.
 No modifiques archivos todavía.
+
+ADICIONAL: Podes adaptar el juego a las palabras del siguiente sitio: https://www.ejemplos.co/palabras-en-nahuatl-y-su-significado/.
+E incluir un partado en el juego donde puedas estudiar estas palabras para liego jugar. Que tambien sea interactivo y llamativo acorde a la app.
